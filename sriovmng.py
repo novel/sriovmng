@@ -53,10 +53,22 @@ def list():
     for device in devices:
         click.echo("%s" % device)
 
+
+@click.command(short_help='set number of VFs for PF device')
+@click.argument('ifname')
+@click.argument('vfs')
+def numvfs(ifname, vfs):
+    ret = sriovlib.set_numvfs(ifname, vfs)
+    if not ret:
+        sys.exit(1)
+
+
 cli.add_command(ifname_to_pci_addr)
 cli.add_command(pci_addr_to_ifname)
 cli.add_command(show)
 cli.add_command(list)
+cli.add_command(numvfs)
+
 
 if "__main__" == __name__:
     cli()

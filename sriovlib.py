@@ -67,3 +67,15 @@ def list():
             sriov_devs.append(dev)
 
     return sriov_devs
+
+
+def set_numvfs(ifname, vfs):
+    dev_path = os.path.join(SYS_IFNAME_PATH, ifname)
+
+    if not os.path.exists(dev_path):
+        return None
+
+    numvfs_path = os.path.join(dev_path, 'device', 'sriov_numvfs')
+    with open(numvfs_path, 'w') as f:
+        vfs = int(vfs)
+        f.write("%s" % vfs)

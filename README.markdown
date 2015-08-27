@@ -55,3 +55,12 @@ $ sriovmng.py ifname_to_pci_addr p2p1_1
 p2p1_1: 0000:05:10.2
 $
 ```
+
+### Setting number of VFs on a PF device
+
+```
+# sriovmng.py numvfs p2p1 0
+#
+```
+
+Note: root access is required to perform this operation.
