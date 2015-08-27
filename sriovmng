@@ -5,7 +5,7 @@ import types
 
 import click
 
-import sriovlib
+from sriovlib import sriov
 
 
 @click.group()
@@ -16,7 +16,7 @@ def cli():
 @click.command(short_help='get interface PCI address by its name')
 @click.argument('ifname')
 def ifname_to_pci_addr(ifname):
-    pci_addr = sriovlib.ifname_to_pci_addr(ifname)
+    pci_addr = sriov.ifname_to_pci_addr(ifname)
     if not pci_addr:
         click.echo('No device found: %s' % ifname, err=True)
         sys.exit(1)
@@ -27,7 +27,7 @@ def ifname_to_pci_addr(ifname):
 @click.command(short_help='get interface name by its PCI address')
 @click.argument('pci_addr')
 def pci_addr_to_ifname(pci_addr):
-    ifname = sriovlib.pci_addr_to_ifname(pci_addr)
+    ifname = sriov.pci_addr_to_ifname(pci_addr)
     if not ifname:
         click.echo('No corresponding device for %s found' % pci_addr,
                    err=True)
@@ -38,7 +38,7 @@ def pci_addr_to_ifname(pci_addr):
 @click.command(short_help='show details about PF interface')
 @click.argument('ifname')
 def show(ifname):
-    info = sriovlib.show(ifname)
+    info = sriov.show(ifname)
     for k, v in info.iteritems():
         if isinstance(v, types.ListType):
             value = ' '.join(v)
@@ -49,7 +49,7 @@ def show(ifname):
 
 @click.command(short_help='show list of PF devices')
 def list():
-    devices = sriovlib.list()
+    devices = sriov.list()
     for device in devices:
         click.echo("%s" % device)
 
@@ -58,7 +58,7 @@ def list():
 @click.argument('ifname')
 @click.argument('vfs')
 def numvfs(ifname, vfs):
-    ret = sriovlib.set_numvfs(ifname, vfs)
+    ret = sriov.set_numvfs(ifname, vfs)
     if not ret:
         sys.exit(1)
 
