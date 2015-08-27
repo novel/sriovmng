@@ -6,6 +6,7 @@ import types
 import click
 
 from sriovlib import sriov
+from sriovlib import utils
 
 
 @click.group()
@@ -15,11 +16,9 @@ def cli():
 
 @click.command(short_help='get interface PCI address by its name')
 @click.argument('ifname')
+@utils.check_common_errors
 def ifname_to_pci_addr(ifname):
     pci_addr = sriov.ifname_to_pci_addr(ifname)
-    if not pci_addr:
-        click.echo('No device found: %s' % ifname, err=True)
-        sys.exit(1)
 
     click.echo("%s: %s" % (ifname, pci_addr))
 
@@ -37,6 +36,7 @@ def pci_addr_to_ifname(pci_addr):
 
 @click.command(short_help='show details about PF interface')
 @click.argument('ifname')
+@utils.check_common_errors
 def show(ifname):
     info = sriov.show(ifname)
     for k, v in info.iteritems():
@@ -57,10 +57,9 @@ def list():
 @click.command(short_help='set number of VFs for PF device')
 @click.argument('ifname')
 @click.argument('vfs')
+@utils.check_common_errors
 def numvfs(ifname, vfs):
     ret = sriov.set_numvfs(ifname, vfs)
-    if not ret:
-        sys.exit(1)
 
 
 cli.add_command(ifname_to_pci_addr)
