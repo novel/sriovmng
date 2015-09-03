@@ -26,7 +26,10 @@ def ifname_to_pci_addr(ifname):
 
 
 def pci_addr_to_ifname(pci_addr):
-    dev_path = _get_dev_path(ifname)
+    pci_path = os.path.join(SYS_PCI_ADDR_PATH, pci_addr)
+
+    if not os.path.exists(pci_path):
+        return None
 
     net_dev_path = os.path.join(pci_path, 'net')
     if not os.path.exists(net_dev_path):
